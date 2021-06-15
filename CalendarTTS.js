@@ -3,6 +3,7 @@ export class CalendarTTS {
     constructor(element, options) {
         this.element = element;
         this.options = options;
+        this.scheduledDays = this.options.scheduledDays;
         this.currentDate = this._setHoursToZero(new Date())
         this.today = this._setHoursToZero(new Date())
         this.currentDay = this.currentDate.getDay();
@@ -75,7 +76,8 @@ export class CalendarTTS {
         this.calendarGrid.innerHTML = '';
         let arrayOfDays = this.getDaysInMonth(this.currentMonth, this.currentYear);
 
-        if (arrayOfDays[0].getDay() > 0) {// Fill array in the left with false value
+        if (arrayOfDays[0].getDay() > 0) {
+            // Fill array in the left with false value
             arrayOfDays = Array(arrayOfDays[0].getDay())
                                                 .fill(false, 0)
                                                 .concat(arrayOfDays);
@@ -84,10 +86,19 @@ export class CalendarTTS {
         arrayOfDays.forEach(dayDate => {
             let dateElement = document.createElement(
                                                     dayDate ? this.calendarDayElementType : 'span');
+            // Mark today's day as selected
             if(dayDate && dayDate.getTime() === this.today.getTime()) {
                 this.activeElement = dateElement;
                 this.activeElement.classList.add('selected');
             }
+
+            if (dayDate && this.scheduledDays){
+                    let scheduledTimes = this.scheduledDays.map(d => d.getTime());
+                    if (scheduledTimes.includes(dayDate.getTime())) {
+                        dateElement.classList.add('scheduled');
+                    }
+            }
+
             dateElement.tabIndex = 0;
             dateElement.value = dayDate;
 
@@ -150,6 +161,14 @@ export class CalendarTTS {
             this.calendarHeaderTitle.textContent = `${month} - ${this.currentYear}`;
             this.insertDaysIntoGrid();
         });
+    }
+
+
+
+    setDatesAsScheduled(dates) {
+        if (!dates) return;
+        this.scheduledDays = dates.map(d => this._setHoursToZero(d));
+        this.updateCalendar();
     }
 
 

@@ -89,6 +89,19 @@
 
 }
 
+#calendar #calendar-grid time.scheduled,
+#calendar #calendar-grid time.scheduled:focus {
+    box-sizing: inherit;
+    background-color: rgba(34, 233, 64, 0.3);
+    box-shadow: 1px 1px rgba(0, 0, 0, 0);
+}
+#calendar #calendar-grid time.scheduled:hover {
+    border: 2px solid rgba(72, 72, 72, 0.5);
+    box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+    box-sizing: inherit;
+}
+
+
 #calendar #calendar-grid > *:hover {
     border: 2px solid rgba(72, 72, 72, 0.5);
     box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
